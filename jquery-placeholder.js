@@ -36,8 +36,8 @@
                 if ($("#placeholder_" + matchedInput.id).length == 0) {
                     try {
                         var offsetNode = matchedInput.parentNode;
-                        while ($(offsetNode).css("position") !== "absolute" && $(offsetNode).css("position") !== "relative") {
-                            offsetNode = offsetNode.parentNode;
+                        if (offsetNode.style.position != "absolute") {
+                            offsetNode.style.position = "relative";
                         }
                         var positionInfo = $.palceholder.GetDomPosition(matchedInput, offsetNode);
                         var doc = document;
@@ -68,13 +68,12 @@
                 var domPadding = domElement.style.paddingBottom.replace("px", "");
                 domPadding = domPadding.replace("px", "");
                 preDomObject = domElement;
-                parentDomObject = domElement;
-                while (parentDomObject != null && parentDomObject.tagName.toUpperCase() != "BODY" && parentDomObject != offsetDomElement) {
+                do {
                     parentDomObject = preDomObject.offsetParent;
                     topLocation += preDomObject.offsetTop;
                     leftLocation += preDomObject.offsetLeft;
                     preDomObject = parentDomObject;
-                }
+                } while (parentDomObject != null && parentDomObject.tagName.toUpperCase() != "BODY" && parentDomObject != offsetDomElement)
                 if (domPadding.match(/^[0-9]+$/)) {
                     topLocation += domPadding - 0;
                 }
